@@ -1,0 +1,73 @@
+Marmalade port of GameSWF
+Orginal version http://tulrich.com/geekstuff/gameswf.html
+
+Port Author
+===========
+
+Pete Hobson (petehobo@gmail.com)
+
+Disclaimer form original project
+================================
+
+gameswf has bugs and quirks, and is not a complete implementation of Flash. The library as a whole is not highly optimized for memory use or speed. However, the text renderer is pretty decent, and the library is currently probably about as well implemented as the GUI library in the average commercial game. It has been used in many real projects but has a lot of rough edges.
+
+How to use marmalade version
+============================
+
+Open and run demo GameSwfPortDemo.mkb
+or, drop in GameSwf folder and associated mkf
+
+Current State
+=============
+
+Compiles and runs on both x68 and ARM
+Anti aliasing is not good quality
+Doesn't handle device rotations well.
+
+However, im interested in importing and rendering some simple UI assets, for that its working well
+
+Problems
+========
+
+Heres my todo entries form the code.  They are really due to my limited understanding
+of c++, so if anyone can advise/fix id be grateful :)
+
+
+utility.h
+
+//TODO - pete - this log2 causses errors on arm - for now im wrapping it an a conditional
+#ifdef I3D_ARCH_X86 
+ inline float	log2(float f) { return logf(f) / LN_2; }
+#endif
+
+
+gameswf.h
+//TODO - pete - not sure what exported_module is?
+	
+	exported_module render_handler*	create_render_handler_iwgl();
+	
+	
+gameswf_render_handler_iwgl.cpp
+//TODO - pete - GL_BGRA undefined in IWGL?  swapping to GL_RGBA
+//glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, data);
+glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+
+GameMain.g (demo)
+	//TODO pete - glOrtho not defined?
+	//glOrtho(-OVERSIZE, OVERSIZE, OVERSIZE, -OVERSIZE, -1, 1);
+	
+container.h
+	//TODO - pete - fix strcasecmp infinite loop - redefine?
+	//define in _root.cpp
+	return strcmp(a, b);
+	//return strcasecmp(a, b);
+	
+tu_timer.cpp
+//Pete H - no sys/timeb in marmalade
+//#include <sys/timeb.h>	// for ftime()
+
+
+utility.cpp
+ TODO - Pete - disabled - look into mallifo struct on arm 
+ struct mallinfo mi;

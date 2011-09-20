@@ -1,0 +1,38 @@
+options
+{
+	s3e-data-dir="data"
+	enable-exceptions=true
+}
+ 
+ includepaths
+{
+
+	source/game
+}
+ 
+files
+{
+	[demo]
+	(source)
+		game/GameMain.cpp		
+
+}
+package {
+	zlib
+}
+
+subprojects
+{
+	zlib
+	iwgl
+	GameSwf
+}
+
+assets
+{
+	(data)
+		start.swf
+	
+		
+
+}
